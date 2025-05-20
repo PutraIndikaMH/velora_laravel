@@ -1,0 +1,948 @@
+      @font-face {
+          font-family: 'laila';
+          src: url('fonts/laila/Laila-Bold.ttf') format('truetype');
+          font-weight: bold;
+      }
+
+      @font-face {
+          font-family: 'nunito';
+          src: url('fonts/nunito/Nunito-Regular.ttf') format('truetype');
+          font-weight: normal;
+      }
+
+
+      * {
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'nunito', sans-serif;
+          background: url("images/background.png") no-repeat center center fixed;
+          background-size: cover;
+          margin: 0;
+          padding: 0;
+          color: #222;
+      }
+
+      /* Navbar */
+      nav {
+          background: #8997b0;
+          /* abu kebiruan */
+          padding: 15px 30px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-family: 'laila';
+      }
+
+      nav .logo {
+          font-weight: bold;
+          letter-spacing: 3px;
+          font-size: 1.2rem;
+          color: black;
+      }
+
+      nav ul {
+          list-style: none;
+          display: flex;
+          gap: 25px;
+          margin: 0;
+          padding: 0;
+          align-items: center;
+      }
+
+      nav ul li {
+          font-weight: 600;
+          cursor: pointer;
+          color: #222;
+      }
+
+      nav ul li a {
+          text-decoration: none;
+          color: #222;
+      }
+
+      nav ul li a:hover {
+          color: #F6F6E8;
+      }
+
+      nav ul li.active a,
+      nav ul li.active a:hover {
+          background: #d97da1;
+          border-radius: 12px;
+          color: white;
+          padding: 5px 12px;
+      }
+
+      nav .login-btn {
+          border-radius: 8px;
+          border: none;
+          padding: 6px 20px;
+          background: #f4f1e7;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.3s ease;
+          font-family: 'laila', 'Popins';
+          text-decoration: none;
+          color: #111;
+      }
+
+      nav .login-active {
+          border-radius: 8px;
+          border: none;
+          padding: 6px 20px;
+          background: #EE97BF;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.3s ease;
+          font-family: 'laila', 'Popins';
+          text-decoration: none;
+          color: #F2ECE6;
+
+      }
+
+      nav .login-active:hover {
+          color: #111;
+      }
+
+      nav .login-btn:hover {
+          background: #e3d5ca;
+      }
+
+
+      main {
+          max-width: 1100px;
+          margin: 20px auto;
+          display: flex;
+          gap: 40px;
+          padding: 0 20px;
+          align-items: center;
+          flex-wrap: wrap;
+      }
+
+      .left-content {
+          flex: 1 1 400px;
+          max-width: 550px;
+      }
+
+      .left-content h1 {
+          font-weight: bold;
+          font-size: 2.4rem;
+          font-family: 'laila', 'Popins';
+      }
+
+      .left-content a.subtitle {
+          display: block;
+          font-weight: 500;
+          font-size: 1rem;
+          color: #85a39a;
+          margin: 8px 0 20px 0;
+          text-decoration: none;
+      }
+
+      .left-content p {
+          font-size: 1rem;
+          color: #444;
+      }
+
+      .left-content p b {
+          font-weight: 600;
+      }
+
+      .highlight-italic {
+          font-style: italic;
+          margin-top: 10px;
+          margin-bottom: 20px;
+          font-weight: 600;
+      }
+
+      .left-content .highlight-pink {
+          color: #f9a8be;
+          font-weight: 700;
+          font-size: 1rem;
+          margin-bottom: 20px;
+          text-align: center;
+      }
+
+      button.scan-btn {
+          background: #f9a8be;
+          border: none;
+          border-radius: 10px;
+          padding: 10px 18px;
+          color: white;
+          font-weight: 600;
+          cursor: pointer;
+          font-size: 1rem;
+          margin-right: 15px;
+          margin-left: 120px;
+          transition: background 0.3s ease;
+      }
+
+      button.scan-btn:hover {
+          background: #de7a91;
+      }
+
+      .learn-link {
+          font-weight: 600;
+          cursor: pointer;
+          color: #222;
+          text-decoration: none;
+      }
+
+      .learn-link:hover {
+          text-decoration: underline;
+      }
+
+      /* Right content */
+      .right-content {
+          flex: 1 1 350px;
+          max-width: 400px;
+          position: relative;
+      }
+
+      .right-content img {
+          width: 100%;
+          border-radius: 80% / 40%;
+          /* membentuk seperti gambar di contoh (flower shape) */
+          object-fit: cover;
+          box-shadow: 0 3px 8px rgb(255 111 134 / 0.31);
+      }
+
+      @media(max-width: 768px) {
+          main {
+              flex-direction: column;
+          }
+
+          .left-content,
+          .right-content {
+              max-width: 100%;
+          }
+
+          nav ul {
+              gap: 15px;
+          }
+      }
+
+      /* ======================================== SCANNING ============================= */
+      /* Dropdown Profil */
+      .dropdown {
+          position: relative;
+      }
+
+      .dropdown-button {
+          border-radius: 8px;
+          border: none;
+          padding: 6px 20px;
+          background: #f4f1e7;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.3s ease;
+          font-family: 'laila', 'Popins';
+          font-weight: 700;
+          box-shadow: 0 3px 8px rgba(255 111 134 / 0.31);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+      }
+
+      .dropdown-button::after {
+          content: '▼';
+          font-size: 0.6rem;
+          margin-left: 4px;
+          display: inline-block;
+      }
+
+      .dropdown-content {
+          display: none;
+          position: absolute;
+          right: 0;
+          background: #f4f1e7;
+          min-width: 180px;
+          border-radius: 12px;
+          padding: 8px 0;
+          box-shadow: 0 3px 8px rgba(255 111 134 / 0.31);
+          z-index: 100;
+          font-weight: 600;
+      }
+
+      .dropdown-content a {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: black;
+          text-decoration: none;
+          font-size: 0.9rem;
+          padding: 8px 22px;
+          cursor: pointer;
+          transition: background 0.3s ease;
+      }
+
+      .dropdown-content a:hover {
+          background: #f8a8bd;
+      }
+
+      .dropdown-content a svg {
+          width: 16px;
+          height: 16px;
+          fill: black;
+      }
+
+      .dropdown.show .dropdown-content {
+          display: block;
+      }
+
+      /* Main container */
+      #scanning-page {
+          max-width: 720px;
+          margin: 40px auto 100px;
+          padding: 0 20px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+      }
+
+      /* Scan box */
+      .scan-box {
+          width: 280px;
+          height: 280px;
+          border: 6px solid transparent;
+          margin: 0 auto 15px;
+          position: relative;
+          border-image:
+              linear-gradient(to top right,
+                  black 0%, black 20%,
+                  transparent 20%, transparent 80%,
+                  black 80%, black 100%) 10 stretch;
+          border-image-slice: 10;
+          border-radius: 10px;
+          filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.15));
+      }
+
+
+
+      .camera-icon {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 48px;
+          height: 48px;
+          fill: black;
+          opacity: 0.8;
+      }
+
+      .btn-drop {
+          background: #f9a8be;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          font-weight: 600;
+          border-radius: 20px;
+          cursor: pointer;
+          position: relative;
+          margin: 10px auto 0;
+          display: inline-block;
+          user-select: none;
+          box-shadow: 0 3px 8px rgba(255 111 134 / 0.31);
+      }
+
+      .btn-drop:after {
+          content: '▼';
+          margin-left: 8px;
+          font-size: 0.7rem;
+      }
+
+      .dropdown-menu {
+          display: none;
+          background: #f9a8be;
+          border-radius: 12px;
+          padding: 10px 0;
+          margin-top: 8px;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 190px;
+          box-shadow: 0 3px 8px rgba(255 111 134 / 0.31);
+          z-index: 20;
+          font-weight: 600;
+          font-size: 0.9rem;
+      }
+
+      .dropdown-menu.show {
+          display: block;
+      }
+
+      .dropdown-menu div {
+          padding: 12px 20px;
+          cursor: pointer;
+          border-radius: 12px;
+          color: white;
+          font-weight: 600;
+      }
+
+      .dropdown-menu div:hover {
+          background: #de7a91;
+      }
+
+      .recommendation {
+          margin: 30px auto 0;
+          background: rgba(137, 151, 176, 0.3);
+          /* biru transparan */
+          border-radius: 20px;
+          padding: 25px 25px 15px;
+          max-width: 520px;
+          text-align: left;
+      }
+
+      .recommendation .title {
+          font-weight: 600;
+          font-size: 1rem;
+          padding: 5px 16px;
+          background: rgba(137, 151, 176, 0.7);
+          width: fit-content;
+          border-radius: 10px;
+          color: #1e2d61;
+          margin-bottom: 18px;
+          user-select: none;
+      }
+
+      .recommendation p {
+          font-weight: 600;
+          margin-bottom: 8px;
+      }
+
+      /* Product Item */
+      .product-item {
+          background: white;
+          border-radius: 12px;
+          padding: 12px 16px;
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          margin-bottom: 13px;
+          box-shadow: 0 2px 5px rgb(0 0 0 / 0.04);
+          cursor: pointer;
+          transition: background 0.2s ease;
+      }
+
+      .product-item:hover {
+          background: #fce5e9;
+      }
+
+      .product-icon {
+          width: 48px;
+          height: 48px;
+          flex-shrink: 0;
+          fill: black;
+      }
+
+      .product-info {
+          flex-grow: 1;
+      }
+
+      .product-info h4 {
+          margin: 0 0 6px;
+          font-weight: 700;
+          font-size: 1rem;
+      }
+
+      .product-info .brand {
+          font-size: 0.8rem;
+          font-weight: 600;
+          color: #2c2c2c;
+          margin-bottom: 4px;
+      }
+
+      .product-info .price {
+          color: #e68aa5;
+          font-weight: 700;
+          font-size: 0.85rem;
+          margin-bottom: 4px;
+      }
+
+      .product-info .desc {
+          font-size: 0.8rem;
+          color: #555;
+      }
+
+      .product-arrow {
+          font-size: 1.7rem;
+          color: #4a4a4a;
+          transition: transform 0.3s ease;
+      }
+
+      .product-item:hover .product-arrow {
+          transform: translateX(6px);
+      }
+
+      /* Chatbot area */
+      .chat-section {
+          margin-top: -40px;
+          text-align: center;
+          position: relative;
+      }
+
+      .chat-section p {
+          font-weight: 600;
+          margin-bottom: 20x;
+      }
+
+      .chat-btn {
+          background: #f9a8be;
+          color: white;
+          padding: 12px 28px;
+          border-radius: 25px;
+          font-weight: 600;
+          cursor: pointer;
+          box-shadow: 0 3px 8px rgba(255 111 134 / 0.31);
+          margin-bottom: 6px;
+          transition: background 0.3s ease;
+          text-decoration: none;
+      }
+
+
+
+      .chat-btn:hover {
+          background: #de7a91;
+      }
+
+      .chat-feedback {
+          margin-top: 50px;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          text-align: end;
+          gap: 15px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #777;
+          position: absolute;
+          bottom: 100px;
+          top: 10dvb;
+          right: -300px;
+          background: transparent;
+          max-width: 300px;
+
+      }
+
+      .feedback-icon {
+          width: 40px;
+          height: 40px;
+          cursor: pointer;
+          filter: drop-shadow(0 0 1px rgba(255 111 134 / 0.6));
+      }
+
+      /* Responsive */
+      @media(max-width: 520px) {
+          main {
+              padding: 0 14px;
+          }
+
+          .recommendation {
+              max-width: 100%;
+          }
+
+          .scan-box {
+              width: 220px;
+              height: 220px;
+              border-width: 4px;
+          }
+      }
+
+      /* ======================= About ========================== */
+      /* Only style for About page */
+
+
+      #aboutPage {
+          max-width: 1200px;
+          margin: 30px auto;
+          padding: 0 20px;
+      }
+
+      #aboutPage .judul {
+          font-family: 'laila';
+          margin-bottom: -30px;
+      }
+
+      .page-about section {
+          margin-bottom: 40px;
+      }
+
+      .page-about .about-story.row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 40px;
+          flex-wrap: wrap;
+          /* responsif */
+          padding: 20px 25px;
+          background-color: transparent;
+          border-radius: 10px;
+          box-sizing: border-box;
+      }
+
+      .page-about .about-story.row .col-left,
+      .page-about .about-story.row .col-right {
+          flex: 1 1 350px;
+          /* minimum 350px, tapi fleksibel */
+      }
+
+      /* Gaya teks kolom kiri */
+      .page-about .about-story.row .col-left h3 {
+          font-weight: 700;
+          font-size: 1.3rem;
+          margin-bottom: 10px;
+          color: #fca3b7;
+      }
+
+      .page-about .about-story.row .col-left p {
+          font-size: 1rem;
+          line-height: 1.4;
+          color: #222;
+          margin-bottom: 50px;
+      }
+
+      /* Tombol scan */
+      .page-about .btn-scan {
+          background-color: #fca3b7;
+          color: #fff;
+          border: none;
+          font-weight: 700;
+          padding: 12px 200px;
+          border-radius: 25px;
+          cursor: pointer;
+          font-size: 1rem;
+          text-decoration: none;
+      }
+
+
+      .page-about .btn-scan:hover {
+          background-color: #da8da4;
+      }
+
+      .col-left .disclaimer {
+          margin-top: 20px;
+          font-size: small;
+          text-align: center;
+      }
+
+
+      .page-about .about-story.row .col-right img {
+          width: 100%;
+          height: auto;
+          max-width: 450px;
+          border-radius: 10px;
+          object-fit: cover;
+          filter: brightness(60%);
+          display: block;
+          box-shadow: 0 0 15px rgb(0 0 0 / 0.15);
+      }
+
+      /* Responsive breakpoint */
+      @media (max-width: 768px) {
+          .page-about .about-story.row {
+              flex-direction: column;
+              padding: 15px;
+          }
+
+          .page-about .about-story.row .col-left,
+          .page-about .about-story.row .col-right {
+              flex: 1 1 100%;
+          }
+
+          .page-about .about-story.row .col-right img {
+              max-width: 100%;
+              margin-top: 20px;
+          }
+      }
+
+
+
+      /* Container utama: 2 kolom kiri dan kanan */
+      .page-about .about-care-contact {
+          display: flex;
+          gap: 40px;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          /* agar responsif */
+          margin-top: 40px;
+          padding: 0 10px;
+          box-sizing: border-box;
+      }
+
+      /* Kolom kiri dan kanan agar fleksibel dan minimal 350px */
+      .page-about .about-care-contact .col-left,
+      .page-about .about-care-contact .col-right {
+          flex: 1 1 350px;
+          /* fleksibel, minimal 350px */
+          box-sizing: border-box;
+          background-color: transparent;
+          padding: 20px 25px;
+          border-radius: 10px;
+      }
+
+      /* Styling gambar perawatan di kolom kiri */
+      .skin-care h2 {
+          font-family: 'laila';
+      }
+
+      .page-about .skin-care img {
+          width: 100%;
+          max-width: 300px;
+          height: auto;
+          display: block;
+          margin-bottom: 20px;
+          opacity: 0.9;
+          object-fit: contain;
+      }
+
+      /* Deskripsi dan highlight teks */
+      .page-about .description {
+          font-size: 0.9rem;
+          line-height: 1.5;
+          color: #333;
+      }
+
+      .page-about .highlight-light {
+          color: #fca3b7;
+          font-weight: 600;
+      }
+
+      /* Form kontak sudah bagus, tambahkan spacing vertikal di form dan tombol */
+      .page-about form label {
+          margin-top: 10px;
+      }
+
+      /* Responsive: stacking vertikal pada layar kecil */
+      @media (max-width: 768px) {
+          .page-about .about-care-contact {
+              flex-direction: column;
+              gap: 30px;
+              padding: 0 5px;
+          }
+
+          .page-about .about-care-contact .col-left,
+          .page-about .about-care-contact .col-right {
+              flex: 1 1 100%;
+              padding: 20px 15px;
+          }
+
+          .page-about .skin-care img {
+              max-width: 100%;
+              margin: 0 auto 20px auto;
+          }
+      }
+
+
+      /* Form kontak */
+      .contact-us h2 {
+          text-align: center;
+          font-family: 'laila';
+      }
+
+      .page-about form label {
+          display: block;
+          margin-bottom: -10px;
+          font-weight: 600;
+          font-size: 0.9rem;
+          color: #111;
+      }
+
+      .page-about form input[type="text"],
+      .page-about form input[type="email"],
+      .page-about form textarea {
+          width: 100%;
+          padding: 12px 16px;
+          border: 1.5px solid #ccc;
+          border-radius: 10px;
+          font-size: 1rem;
+          resize: vertical;
+          margin-bottom: 10px;
+          box-sizing: border-box;
+          transition: border-color 0.3s ease;
+          background-color: #EE97BF;
+      }
+
+      .page-about form input[type="text"]:focus,
+      .page-about form input[type="email"]:focus,
+      .page-about form textarea:focus {
+          border-color: #fca3b7;
+          outline: none;
+      }
+
+      .page-about form textarea {
+          min-height: 110px;
+      }
+
+      .page-about .btn-submit {
+          width: 100%;
+          padding: 12px 16px;
+          border-radius: 10px;
+          border: none;
+          background-color: #8b9bc9;
+          color: #fff;
+          font-weight: 700;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+      }
+
+      .page-about .btn-submit:hover {
+          background-color: #677bb0;
+      }
+
+      /* ================================ LOGIN ===================================== */
+
+      /* Kontainer utama */
+      #loginPage {
+          display: flex;
+          flex-direction: column;
+          max-width: 500px;
+          width: 100vh;
+          padding: 30px 25px;
+          text-align: center;
+      }
+
+      #loginPage h1 {
+          font-weight: 700;
+          font-size: 34px;
+          font-family: 'laila';
+      }
+
+      #loginPage p.subtitle {
+          font-size: 14px;
+          margin-top: -50px;
+          font-weight: 500;
+          color: #222;
+      }
+
+      /* Form input */
+      form {
+          display: flex;
+          flex-direction: column;
+          gap: 25px;
+          margin-bottom: 20px;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+          border: 1px solid #d4889f;
+          border-radius: 25px;
+          padding: 14px 20px;
+          font-size: 14px;
+          outline: none;
+          background-color: #ef9dbf;
+          color: #000;
+          font-weight: 500;
+          cursor: text;
+          width: 400px;
+      }
+
+
+      input::placeholder {
+          color: #2a1822;
+          font-weight: 500;
+      }
+
+      /* Tombol login */
+      button.btn-login {
+          background-color: #a5b6d3;
+          border-radius: 25px;
+          padding: 12px 40px;
+          font-weight: 700;
+          color: #222;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          align-self: center;
+          font-family: 'laila';
+      }
+
+      button.btn-login:hover {
+          background-color: #919ebc;
+      }
+
+      /* Baris bawah */
+      .bottom-text {
+          font-size: 13px;
+          color: #000;
+          font-weight: 500;
+      }
+
+      .bottom-text a {
+          background-color: #ef9dbf;
+          border-radius: 20px;
+          border: none;
+          color: #fff;
+          font-weight: 700;
+          margin-left: 8px;
+          padding: 5px 18px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          text-decoration: none;
+      }
+
+      .bottom-text a:hover {
+          background-color: #d47a9e;
+      }
+
+
+      /* ======================== REGISTER ===================== */
+
+      .register-page{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .register-page h1 {
+        font-family: 'laila';
+          font-weight: 700;
+          font-size: 28px;
+          margin-bottom: -20px;
+      }
+
+      .register-page p.subtitle {
+          font-size: 14px;
+          margin-bottom: 35px;
+          font-weight: 500;
+          color: #222;
+      }
+
+      .register-page form {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          margin-bottom: -10px;
+      }
+
+      .register-page input,
+      .register-page select {
+          border: 1px solid #d4889f;
+          border-radius: 25px;
+          padding: 10px 16px;
+          font-size: 14px;
+          outline: none;
+          background-color: #ef9dbf;
+          color: #000;
+          font-weight: 500;
+          cursor: text;
+          appearance: none;
+      }
+
+      .register-page button.btn-daftar {
+          background-color: #a5b6d3;
+          border-radius: 25px;
+          padding: 12px 40px;
+          font-weight: 700;
+          color: #222;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          align-self: center;
+          margin-top: 10px;
+      }
+
+      .register-page button.btn-daftar:hover {
+          background-color: #919ebc;
+      }
