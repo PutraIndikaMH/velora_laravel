@@ -40,7 +40,7 @@
         </p>
         <button
           class="scan-btn"
-          onclick="alert('Fitur scan akan dikembangkan.')"
+          onclick="window.location.href='{{ route('scanning') }}'"
         >
           Mulai Scan
         </button>

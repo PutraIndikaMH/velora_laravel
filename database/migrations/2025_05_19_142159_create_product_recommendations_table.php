@@ -16,11 +16,13 @@ return new class extends Migration
         Schema::create('product_recommendations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('history_id')->constrained()->onDelete('cascade');
+            $table->string('product_name');
             $table->string('product_category');
             $table->text('product_description')->nullable();
             $table->timestamp('recommendation_timestamp')->nullable();
             $table->string('recommendation_links')->nullable();
             $table->decimal('product_price', 10, 2)->nullable();
+            $table->string('product_image')->nullable();
             $table->timestamps();
         });
     }

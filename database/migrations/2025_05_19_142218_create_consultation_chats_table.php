@@ -17,8 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('room_id')->constrained()->onDelete('cascade');
-            $table->timestamp('chat_start_time')->nullable();
-            $table->timestamp('chat_end_time')->nullable();
             $table->timestamps();
         });
     }

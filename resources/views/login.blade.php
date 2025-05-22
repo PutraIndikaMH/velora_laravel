@@ -31,8 +31,8 @@
       @endif
       <form method="POST" action="{{ route('login.process') }}">
          @csrf
-        <input type="email" placeholder="Email"   value="{{ old('email') }}" required />
-        <input type="password" placeholder="Password" required />
+        <input type="email" placeholder="Email" name="email"  value="{{ old('email') }}" required />
+        <input type="password" placeholder="Password" name="password" required />
         <button type="submit" class="btn-login">Login</button>
       </form>
       <div class="bottom-text">

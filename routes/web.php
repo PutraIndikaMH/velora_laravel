@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\FaceScanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,9 +29,18 @@ Route::get('/history', function () {
     return view('history');
 })->name('history');
 
-Route::get('/scanning', function (){
-    return view('scanning');
-})->name('scanning');
+//Route::get('/scanning', function (){
+    //return view('scanning');
+//})->name('scanning');
+
+//Route::get('/scanning', [FaceScanController::class, 'index'])->name('scanning');
+//Route::post('/face-scan/upload', [FaceScanController::class, 'upload'])->name('face-scan.upload');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/scanning', [FaceScanController::class, 'index'])->name('scanning');
+    Route::post('/scanning', [FaceScanController::class, 'upload'])
+         ->name('scan.upload');
+});
 
 //Route::get('/register', function (){
    // return view('register');

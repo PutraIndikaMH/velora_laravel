@@ -15,10 +15,16 @@ return new class extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('face_scan_template')->nullable();
-            $table->string('scan_result')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->string('image_path')->nullable();
+            $table->string('skin_type')->nullable();
+            $table->text('analysis_result')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
         });
     }
 

@@ -9,6 +9,12 @@ class History extends Model
 {
     use HasFactory;
 
+     protected $fillable = [
+        'user_id',
+        'image_path',
+        'skin_type',
+        'analysis_result'
+    ];
 
      public function user()
     {
@@ -17,6 +23,6 @@ class History extends Model
 
     public function productRecommendation()
     {
-        return $this->hasOne(ProductRecommendation::class);
+        return $this->hasMany(ProductRecommendation::class);
     }
 }
