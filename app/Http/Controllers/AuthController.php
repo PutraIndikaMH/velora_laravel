@@ -27,14 +27,17 @@ class AuthController extends Controller
         ]);
 
           if (Auth::attempt($credentials)) {
-            // Jika login berhasil, redirect ke halaman yang diinginkan
            return redirect()->intended('/');
         } else {
-            // Jika login gagal, redirect kembali ke halaman login dengan pesan error
             return redirect()->route('login')
                 ->withErrors(['email' => 'Email atau password salah.'])
                 ->withInput();
         }
 
+    }
+
+    public function logout() {
+        auth()->logout();
+        return redirect()->route('home');
     }
 }

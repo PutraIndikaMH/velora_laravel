@@ -9,33 +9,7 @@
 </head>
 
 <body>
-    <nav>
-        <div class="logo">VELORA</div>
-        <ul>
-            <li><a href="{{route('home')}}">Home</a></li>
-            <li><a href="{{route('scanning')}}">Scanning</a></li>
-            <li class="active"><a href="{{route('services')}}">Services</a></li>
-            <li><a href="{{route('about')}}">About Us</a></li>
-            <li class="dropdown">
-                <button class="dropdown-button" id="profile-button">Profil</button>
-                <div class="dropdown-content" id="profile-menu">
-                    <a href="history.html">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M12 5.5A6.5 6.5 0 1 0 18.5 12 6.508 6.508 0 0 0 12 5.5zM12 15a9 9 0 0 1-8.66-6.11l-1.85 1.15A11.986 11.986 0 0 0 12 17a11.986 11.986 0 0 0 10.51-5.96l-1.85-1.15A9 9 0 0 1 12 15zm0 4a1 1 0 1 0 1 1 1 1 0 0 0-1-1z" />
-                        </svg>
-                        History
-                    </a>
-                    <a href="#">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M7 10v4h10v-4H7zm-4 8h18v2H3v-2zM3 4h18v2H3V4zm0 6h18v2H3v-2z" />
-                        </svg>
-                        Logout
-                    </a>
-                </div>
-            </li>
-        </ul>
-    </nav>
+    @include('template.nav')
 
     <main id="chatBot_page">
         <div class="chat-header">Hello, Users!</div>
@@ -58,41 +32,41 @@
         </div>
 
         <form class="chat-input-container">
-            <input type="text" placeholder="type message here..."  />
-            <button class="btn-submit"><img src="icons/send-alt-1-svgrepo-com.svg" class="btn-input" alt="" srcset=""></button>
+            <input type="text" placeholder="type message here..." />
+            <button class="btn-submit"><img src="icons/send-alt-1-svgrepo-com.svg" class="btn-input" alt=""
+                    srcset=""></button>
         </form>
     </main>
 
 
-        <script>
-            // Dropdown profil toggle
-            const profileBtn = document.getElementById('profile-button');
-            const profileMenu = document.getElementById('profile-menu');
-            const dropdownLi = profileBtn.parentElement;
+    <script>
+        // Dropdown profil toggle
+        const profileBtn = document.getElementById('profile-button');
+        const profileMenu = document.getElementById('profile-menu');
+        const dropdownLi = profileBtn.parentElement;
 
-            profileBtn.addEventListener('click', () => {
-                dropdownLi.classList.toggle('show');
-            });
+        profileBtn.addEventListener('click', () => {
+            dropdownLi.classList.toggle('show');
+        });
 
-            // Close dropdown if click outside
-            window.addEventListener('click', e => {
-                if (!dropdownLi.contains(e.target)) {
-                    dropdownLi.classList.remove('show');
-                }
-            });
+        // Close dropdown if click outside
+        window.addEventListener('click', e => {
+            if (!dropdownLi.contains(e.target)) {
+                dropdownLi.classList.remove('show');
+            }
+        });
 
-            // Dropdown Start Analyze button
-            const startBtn = document.getElementById('startAnalyzeBtn');
-            const analyzeDropdown = document.getElementById('analyzeDropdown');
+        // Dropdown Start Analyze button
+        const startBtn = document.getElementById('startAnalyzeBtn');
+        const analyzeDropdown = document.getElementById('analyzeDropdown');
 
-            startBtn.addEventListener('click', () => {
-                analyzeDropdown.classList.toggle('show');
-                // Aria attribute for accessibility
-                const expanded = startBtn.getAttribute('aria-expanded') === 'true';
-                startBtn.setAttribute('aria-expanded', !expanded);
-            });
-
-        </script>
+        startBtn.addEventListener('click', () => {
+            analyzeDropdown.classList.toggle('show');
+            // Aria attribute for accessibility
+            const expanded = startBtn.getAttribute('aria-expanded') === 'true';
+            startBtn.setAttribute('aria-expanded', !expanded);
+        });
+    </script>
 
 </body>
 

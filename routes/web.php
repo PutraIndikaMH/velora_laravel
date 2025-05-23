@@ -29,41 +29,45 @@ Route::get('/history', function () {
     return view('history');
 })->name('history');
 
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.process');
+Route::get('/services', function () {
+    return view('services');
+})->name('services');
+
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/scanning', [FaceScanController::class, 'index'])->name('scanning');
+    Route::post('/scanning', [FaceScanController::class, 'upload'])
+        ->name('scan.upload');
+    Route::get('/logout',[AuthController::class,'logout'])->name('logout');
+});
+
 //Route::get('/scanning', function (){
-    //return view('scanning');
+//return view('scanning');
 //})->name('scanning');
 
 //Route::get('/scanning', [FaceScanController::class, 'index'])->name('scanning');
 //Route::post('/face-scan/upload', [FaceScanController::class, 'upload'])->name('face-scan.upload');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/scanning', [FaceScanController::class, 'index'])->name('scanning');
-    Route::post('/scanning', [FaceScanController::class, 'upload'])
-         ->name('scan.upload');
-});
+
 
 //Route::get('/register', function (){
-   // return view('register');
+// return view('register');
 //})->name('register');
 
 
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register'])->name('register.process');
+
 
 //Route::get('/login', function (){
-    //return view('login');
+//return view('login');
 //})->name('login');
 
 //Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 //Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
-Route::get('/services', function (){
-    return view('services');
-})->name('services');
-
-
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
 
 // Rute Home (contoh)

@@ -8,16 +8,7 @@
   </head>
 
   <body>
-    <nav>
-      <div class="logo">VELORA</div>
-      <ul>
-        <li><a href="{{route('home')}}">Home</a></li>
-        <li><a href="{{route('scanning')}}">Scanning</a></li>
-        <li><a href="{{route('services')}}">Services</a></li>
-        <li><a href="{{route('about')}}">About Us</a></li>
-        <a href="{{route('login')}}" class="login-btn">Login</a>
-      </ul>
-    </nav>
+    @include('template.nav')
 
     <main class="register-page">
       <h1>Daftar</h1>

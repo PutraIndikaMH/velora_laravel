@@ -67,7 +67,8 @@ body {
 }
 
 .upload-option:hover {
-    background-color: #ffedf4;
+    color: #ff69b4;
+    background-color: #F4F1E7;
 }
 
 .upload-option input:checked + * {
@@ -219,6 +220,13 @@ body {
     cursor: pointer;
     z-index: 10;
 }
+
+
+
+
+
+/* ============================ HOME ========================== */
+
 
 /* Navbar */
 nav {
@@ -577,9 +585,7 @@ button.scan-btn:hover {
     font-weight: 600;
 }
 
-.dropdown-menu div:hover {
-    background: #de7a91;
-}
+
 
 .recommendation {
     margin: 30px auto 0;
