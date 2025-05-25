@@ -16,19 +16,41 @@ class RegisterController extends Controller
         return view('register');
     }
 
-     public function register(Request $request)
+    public function register(Request $request)
     {
-         $input = $request->all();
+        // Custom validation messages
+        $messages = [
+            'password.required' => 'Password harus diisi.',
+            'password.min' => 'Password harus terdiri dari minimal 6 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'nama.required' => 'Nama harus diisi.',
+            'email.required' => 'Email harus diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'jenis_kelamin.required' => 'Pilih jenis kelamin.',
+            'tanggal_lahir.required' => 'Tanggal lahir harus diisi.',
+            'tanggal_lahir.date' => 'Tanggal lahir tidak valid.',
+        ];
 
-         User::create([
-             'nama' => $input['nama'],
-             'email' => $input['email'],
-             'jenis_kelamin' => $input['jenis_kelamin'],
-             'tanggal_lahir' => $input['tanggal_lahir'],
-             'password' => Hash::make($input['password']),
-         ]);
-         return redirect()->route('login')
-             ->with('success', 'Pendaftaran berhasil! Silakan login.');
+        // Validate the request data
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
+            'jenis_kelamin' => 'required|in:pria,wanita',
+            'tanggal_lahir' => 'required|date',
+            'password' => 'required|string|min:6|confirmed', // confirmed rule for password
+        ], $messages);
+
+        // Create the user if validation passes
+        User::create([
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('login')
+            ->with('success', 'Pendaftaran berhasil! Silakan login.');
     }
-
 }

@@ -13,6 +13,21 @@
 
     <main id="aboutPage">
         <h2 class="judul">OUR STORY</h2>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <section class="about-story row">
             <div class="col-left">
                 <h3>
@@ -20,14 +35,13 @@
                 </h3>
                 <p>
                     Dibangun dengan teknologi terbaru dan didukung oleh para ahli
-                    dermatologi, GlowSkin berkomitmen membantu Anda memahami kulit wajah
+                    dermatologi, Velora berkomitmen membantu Anda memahami kulit wajah
                     dan merawatnya secara tepat sehingga terhindar dari masalah kulit.
                 </p>
 
                 <a href="{{ route('scanning') }}" class="btn-scan">Scan Kulit Anda</a>
                 <p class="disclaimer" style="font-size: small">
-                    Tergantung pada konsultasi. Hasil dapat bervariasi. Batalkan kapan
-                    saja.
+                    Tergantung pada konsultasi. Hasil dapat bervariasi.
                 </p>
             </div>
 
@@ -46,7 +60,7 @@
                         Kami menyediakan rekomendasi produk perawatan kulit yang
                         dipersonalisasi sesuai dengan kebutuhan dan kondisi kulit Anda,
                         mulai dari produk alami hingga perawatan medis yang terpercaya.
-                        Selain itu, GlowSkin juga menawarkan tips harian dan edukasi
+                        Selain itu, Velora menawarkan tips harian dan edukasi
                         seputar perawatan kulit yang mudah diaplikasikan, sehingga Anda
                         dapat menjaga kulit wajah tetap sehat, segar, dan terlindungi dari
                         berbagai gangguan.
@@ -57,7 +71,8 @@
             <div class="col-right">
                 <div class="contact-us">
                     <h2>KONTAK KAMI</h2>
-                    <form id="contactForm" action="#" method="post" novalidate>
+                    <form id="contactForm" action="{{ route('postFeedback') }}" method="post" novalidate>
+                        @csrf
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" required />
 
@@ -68,6 +83,8 @@
                         <textarea id="message" name="message" rows="6" required></textarea>
 
                         <button type="submit" class="btn-submit">Submit</button>
+
+
                     </form>
                 </div>
             </div>

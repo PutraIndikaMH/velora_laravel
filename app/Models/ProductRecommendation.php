@@ -9,7 +9,19 @@ class ProductRecommendation extends Model
 {
     use HasFactory;
 
-     public function history()
+    protected $table = 'product_recommendations';
+
+    protected $fillable = [
+        'history_id',
+        'product_name',
+        'product_category',
+        'product_description',
+        'product_image',
+        'recommendation_links',
+        'product_price',
+    ];
+
+    public function history()
     {
         return $this->belongsTo(History::class);
     }

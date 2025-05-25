@@ -2,9 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\FaceScanController;
+use App\Http\Controllers\FeedbackContoller;
+use App\Http\Controllers\HistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,56 +28,21 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Route::get('/history', function () {
-    return view('history');
-})->name('history');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.process');
-Route::get('/services', function () {
-    return view('services');
-})->name('services');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/scanning', [FaceScanController::class, 'index'])->name('scanning');
-    Route::post('/scanning', [FaceScanController::class, 'upload'])
+    Route::post('/upload', [FaceScanController::class, 'upload'])
         ->name('scan.upload');
-    Route::get('/logout',[AuthController::class,'logout'])->name('logout');
+    Route::get('/scan', [FaceScanController::class, 'showRecommendations'])->name('scan');
+    Route::get('/history', [HistoryController::class, 'history'])->name('history');
+    Route::post('/postFeedback', [FeedbackContoller::class, 'postFeedback'])->name('postFeedback');
+    Route::get('/services', [ChatController::class, 'index'])->name('services');
+    Route::post('/services', [ChatController::class, 'handleChat'])->name('chat.handle');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
-
-//Route::get('/scanning', function (){
-//return view('scanning');
-//})->name('scanning');
-
-//Route::get('/scanning', [FaceScanController::class, 'index'])->name('scanning');
-//Route::post('/face-scan/upload', [FaceScanController::class, 'upload'])->name('face-scan.upload');
-
-
-
-//Route::get('/register', function (){
-// return view('register');
-//})->name('register');
-
-
-
-
-//Route::get('/login', function (){
-//return view('login');
-//})->name('login');
-
-//Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-//Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-
-
-
-// Rute Home (contoh)
-//Route::get('/', function () {
-    // Cek apakah user sudah login
-   // if (!Session::has('user_id')) {
-      //  return redirect()->route('login');
-   // }
-   // return view('home');
-//})->name('home');

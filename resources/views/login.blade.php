@@ -13,13 +13,7 @@
     <main id="loginPage">
       <h1>Login</h1>
       <p class="subtitle">Siap untuk kembali? Silakan login!</p>
-       @if ($errors->any())
-        <div class="error-message">
-          @foreach ($errors->all() as $error)
-            <p>{{ $error }}</p>
-          @endforeach
-        </div>
-      @endif
+      @include('template.alert')
       <form method="POST" action="{{ route('login.process') }}">
          @csrf
         <input type="email" placeholder="Email" name="email"  value="{{ old('email') }}" required />

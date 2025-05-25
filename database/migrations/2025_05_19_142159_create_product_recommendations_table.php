@@ -19,10 +19,9 @@ return new class extends Migration
             $table->string('product_name');
             $table->string('product_category');
             $table->text('product_description')->nullable();
-            $table->timestamp('recommendation_timestamp')->nullable();
-            $table->string('recommendation_links')->nullable();
-            $table->decimal('product_price', 10, 2)->nullable();
             $table->string('product_image')->nullable();
+            $table->string('recommendation_links')->nullable(); 
+            $table->decimal('product_price', 10, 2)->nullable();
             $table->timestamps();
         });
     }

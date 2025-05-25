@@ -71,7 +71,7 @@ body {
     background-color: #F4F1E7;
 }
 
-.upload-option input:checked + * {
+.upload-option input:checked+* {
     background-color: #ff69b4;
     color: white;
 }
@@ -237,6 +237,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     font-family: "laila";
+    box-shadow: 0px 5px 12px 0px rgba(137, 151, 176, 0.78);
 }
 
 nav .logo {
@@ -277,6 +278,8 @@ nav ul li.active a:hover {
     color: white;
     padding: 5px 12px;
 }
+
+
 
 nav .login-btn {
     border-radius: 8px;
@@ -445,6 +448,7 @@ button.scan-btn:hover {
     display: flex;
     align-items: center;
     gap: 6px;
+
 }
 
 .dropdown-button::after {
@@ -496,7 +500,8 @@ button.scan-btn:hover {
 /* Main container */
 #scanning-page {
     max-width: 720px;
-    margin: 40px auto 100px;
+    margin: 40px auto;
+    margin-bottom: 20px;
     padding: 0 20px;
     text-align: center;
     display: flex;
@@ -510,16 +515,13 @@ button.scan-btn:hover {
     border: 6px solid transparent;
     margin: 0 auto 15px;
     position: relative;
-    border-image: linear-gradient(
-            to top right,
+    border-image: linear-gradient(to top right,
             black 0%,
             black 20%,
             transparent 20%,
             transparent 80%,
             black 80%,
-            black 100%
-        )
-        10 stretch;
+            black 100%) 10 stretch;
     border-image-slice: 10;
     border-radius: 10px;
     filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.15));
@@ -552,7 +554,7 @@ button.scan-btn:hover {
 }
 
 .btn-drop:after {
-    content: "▼";
+    content: "▶";
     margin-left: 8px;
     font-size: 0.7rem;
 }
@@ -571,6 +573,8 @@ button.scan-btn:hover {
     z-index: 20;
     font-weight: 600;
     font-size: 0.9rem;
+    top: -150px;
+    left: 260px;
 }
 
 .dropdown-menu.show {
@@ -614,6 +618,10 @@ button.scan-btn:hover {
     margin-bottom: 8px;
 }
 
+.recommendation a {
+    text-decoration: none;
+}
+
 /* Product Item */
 .product-item {
     background: white;
@@ -647,6 +655,7 @@ button.scan-btn:hover {
     margin: 0 0 6px;
     font-weight: 700;
     font-size: 1rem;
+    color: #000;
 }
 
 .product-info .brand {
@@ -989,6 +998,7 @@ button.scan-btn:hover {
 
 /* Kontainer utama */
 #loginPage {
+    position: relative;
     display: flex;
     flex-direction: column;
     max-width: 500px;
@@ -1082,6 +1092,7 @@ button.btn-login:hover {
 /* ======================== REGISTER ===================== */
 
 .register-page {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -1138,3 +1149,6 @@ button.btn-login:hover {
 .register-page button.btn-daftar:hover {
     background-color: #919ebc;
 }
+
+
+/* =================== ALERT =================== */

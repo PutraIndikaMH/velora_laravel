@@ -5,66 +5,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/service.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Service</title>
 </head>
+@include('template.serviceStyle')
 
 <body>
     @include('template.nav')
 
     <main id="chatBot_page">
+
         <div class="chat-header">Hello, Users!</div>
         <div class="chat-subtitle">How can I help you today?</div>
-
         <img class="icon-discord" src="icons/chatBot.png" alt="">
-
         <div class="chat-box" id="chatBox">
             <div class="bubble bot">Apakah ada hal khusus yang ingin kamu bahas?</div>
-            <div class="bubble user">Kulitku sering perih kalau pakai skincare, kenapa ya?</div>
-            <div class="bubble bot">Aku lihat kamu punya masalah kulit kering dan agak sensitif, ya? Yuk kita bahas
-                pelan-pelan...</div>
-            <div class="bubble user">Iya, kadang suka merah juga</div>
-            <div class="bubble bot">Sebelum kita lanjut, aku mau tanya sedikit ya:
-                <br>Kamu merasa kulitmu makin kering di pagi atau malam hari?
-            </div>
-            <div class="bubble user">Biasanya malam sih kak, apalagi kalau habis mandi.</div>
-            <div class="bubble bot">Noted ya! Itu bisa jadi karena skin barrier kamu sedang lemah. Tapi jangan khawatir,
-                ini masih bisa dibantu dengan perawatan yang tepat.</div>
         </div>
 
-        <form class="chat-input-container">
-            <input type="text" placeholder="type message here..." />
-            <button class="btn-submit"><img src="icons/send-alt-1-svgrepo-com.svg" class="btn-input" alt=""
-                    srcset=""></button>
+
+        <form class="chat-input-container" id="chatForm" method="POST">
+            @csrf
+            <input type="text" id="userBox" name="message" placeholder="Type your message here..." />
+            <button type="submit" class="btn-submit"><img src="icons/send-alt-1-svgrepo-com.svg" class="btn-input"
+                    alt=""></button>
         </form>
+
+
+
+
+
     </main>
 
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Dropdown profil toggle
-        const profileBtn = document.getElementById('profile-button');
-        const profileMenu = document.getElementById('profile-menu');
-        const dropdownLi = profileBtn.parentElement;
 
-        profileBtn.addEventListener('click', () => {
-            dropdownLi.classList.toggle('show');
-        });
 
-        // Close dropdown if click outside
-        window.addEventListener('click', e => {
-            if (!dropdownLi.contains(e.target)) {
-                dropdownLi.classList.remove('show');
+        $('#chatForm').on('submit', function(event) {
+            event.preventDefault();
+            var userMessage = $('#userBox').val().trim();
+
+            if (!userMessage) {
+                alert("Masukkan pesan sebelum mengirim.");
+                return;
             }
-        });
 
-        // Dropdown Start Analyze button
-        const startBtn = document.getElementById('startAnalyzeBtn');
-        const analyzeDropdown = document.getElementById('analyzeDropdown');
 
-        startBtn.addEventListener('click', () => {
-            analyzeDropdown.classList.toggle('show');
-            // Aria attribute for accessibility
-            const expanded = startBtn.getAttribute('aria-expanded') === 'true';
-            startBtn.setAttribute('aria-expanded', !expanded);
+            // Tampilkan pesan user
+            $('#chatBox').append(`<div class='bubble user'>${userMessage}</div>`);
+            $('#userBox').val('');
+            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+
+            // Kirim ke server
+            $.ajax({
+                url: '{{ route('chat.handle') }}',
+                method: 'POST',
+                data: {
+                    message: userMessage,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'text',
+                // Terima response sebagai text biasa
+                success: function(reply) {
+                    console.log(reply)
+                    $('#chatBox').append(`<div class='bubble bot'>${reply}</div>`);
+                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+                },
+                error: function() {
+                    console.log("error")
+                    $('#chatBox').append('<div class="bubble bot error">Maaf, terjadi kesalahan</div>');
+                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+                }
+            });
         });
     </script>
 

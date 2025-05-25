@@ -125,7 +125,7 @@
               const context = canvas.getContext('2d');
               context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-              // Ambil URL data gambar
+              // Ambil URL data gambar (pratinjau)
               const imageDataURL = canvas.toDataURL('image/png');
               previewImage.src = imageDataURL;
 
@@ -141,25 +141,22 @@
               removePreviewBtn.style.display = 'block';
               startCameraBtn.style.display = 'block';
 
-              // Aktifkan tombol analisis
-              startAnalyzeBtn.disabled = false;
-
               // Siapkan file untuk diunggah
               canvas.toBlob(function(blob) {
-                  const file = new File([blob], 'foto_tersimpan.png', {
+                  const file = new File([blob], 'captured_image.png', {
                       type: 'image/png'
                   });
 
                   // Hapus input tersembunyi sebelumnya jika ada
-                  const inputExisting = scanForm.querySelector('input[name="capturedImage"]');
+                  const inputExisting = scanForm.querySelector('input[name="image"]');
                   if (inputExisting) {
                       inputExisting.remove();
                   }
 
-                  // Buat input tersembunyi baru
+                  // Buat input gambar baru
                   const hiddenInput = document.createElement('input');
                   hiddenInput.type = 'file';
-                  hiddenInput.name = 'capturedImage';
+                  hiddenInput.name = 'image'; // Pastikan tetap 'image'
                   hiddenInput.style.display = 'none';
 
                   // Tambahkan file ke input
@@ -170,12 +167,10 @@
                   // Tambahkan ke form
                   scanForm.appendChild(hiddenInput);
 
-                  // Pastikan opsi kamera dipilih
-                  cameraOption.checked = true;
-                  galleryOption.checked = false;
+                  // Aktifkan tombol analisis
+                  startAnalyzeBtn.disabled = false; // Pastikan tombol diaktifkan di sini
               }, 'image/png');
           }
-
           // Fungsi untuk menangani perubahan pilihan unggah
           function handleUploadTypeChange() {
               resetStates();
@@ -260,41 +255,18 @@
           });
 
           // Tombol mulai analisis
-          document.getElementById('startAnalyzeBtn').addEventListener('click', function() {
-              const imageInput = document.getElementById('inputGallery');
+          startAnalyzeBtn.addEventListener('click', function() {
+              const imageInput = document.querySelector('input[name="image"]'); // Mencari input 'image'
               const previewImage = document.getElementById('previewImage');
 
               // Validasi input gambar
-              if (!imageInput.files.length && !previewImage.src) {
+              if (!imageInput || !imageInput.files.length) {
                   alert('Silakan pilih gambar terlebih dahulu');
                   return;
               }
 
-              // Buat FormData
-              const formData = new FormData();
-
-              // Tambahkan gambar dari input file atau convert preview image
-              if (imageInput.files.length) {
-                  formData.append('image', imageInput.files[0]);
-              } else if (previewImage.src) {
-                  // Konversi data URL ke blob
-                  fetch(previewImage.src)
-                      .then(res => res.blob())
-                      .then(blob => {
-                          // Buat File dari blob
-                          const file = new File([blob], 'captured_image.png', {
-                              type: 'image/png'
-                          });
-                          formData.append('image', file);
-
-                          // Lakukan upload
-                          sendImageToServer(formData);
-                      });
-                  return;
-              }
-
-              // Lakukan upload langsung jika dari input file
-              sendImageToServer(formData);
+              // Kirim FormData
+              scanForm.submit(); // Mengirim form
           });
 
           function sendImageToServer(formData) {
@@ -311,22 +283,20 @@
                       }
                   })
                   .then(response => {
-                      // Cek status response
+                      // Cek status respons
                       if (!response.ok) {
-                          // Tangkap pesan error dari server
-                          return response.json().then(errorData => {
-                              throw new Error(errorData.message || 'Gagal mengunggah gambar');
+                          return response.text().then(errorData => {
+                              throw new Error(errorData || 'Gagal mengunggah gambar');
                           });
                       }
-                      return response.json();
+                      return response.json(); // Selalu kembalikan JSON untuk permintaan sukses
                   })
                   .then(data => {
-                      // Kembalikan status tombol
                       startAnalyzeBtn.disabled = false;
                       startAnalyzeBtn.textContent = 'Start Analyze';
 
                       if (data.success) {
-                          // Tampilkan hasil analisis (sama seperti sebelumnya)
+                          // Update tampilan rekomendasi produk
                           const recommendationSection = document.getElementById('recommendationSection');
                           const skinTypeResult = document.getElementById('skinTypeResult');
                           const productRecommendations = document.getElementById('productRecommendations');
@@ -338,13 +308,13 @@
                               const productItem = document.createElement('div');
                               productItem.classList.add('product-item');
                               productItem.innerHTML = `
-                    <div class="product-info">
-                        <h4>${product.nama}</h4>
-                        <div class="brand">${product.brand}</div>
-                        <div class="price">Rp. ${product.harga.toLocaleString('id-ID')}</div>
-                        <div class="desc">${product.deskripsi}</div>
-                    </div>
-                `;
+                                <div class="product-info">
+                                    <h4>${product.nama}</h4>
+                                    <div class="brand">${product.brand}</div>
+                                    <div class="price">Rp. ${product.harga.toLocaleString('id-ID')}</div>
+                                    <div class="desc">${product.deskripsi}</div>
+                                </div>
+                            `;
                               productRecommendations.appendChild(productItem);
                           });
 
@@ -354,11 +324,8 @@
                       }
                   })
                   .catch(error => {
-                      // Kembalikan status tombol
                       startAnalyzeBtn.disabled = false;
                       startAnalyzeBtn.textContent = 'Start Analyze';
-
-                      // Tampilkan pesan error yang jelas
                       console.error('Kesalahan:', error);
                       alert(error.message || 'Terjadi kesalahan saat mengunggah');
                   });
@@ -424,20 +391,4 @@
               recommendationSection.style.display = 'block';
           }
       });
-
-
-
-
-
-      // Dummy actions for analyze options
-      //document.getElementById('chooseLib').addEventListener('click', () => {
-      // alert('Fitur pilih foto dari perpustakaan akan dikembangkan.');
-      // analyzeDropdown.classList.remove('show');
-      // startBtn.setAttribute('aria-expanded', false);
-      // });
-      // document.getElementById('takeSelfie').addEventListener('click', () => {
-      // alert('Fitur selfie akan dikembangkan.');
-      // analyzeDropdown.classList.remove('show');
-      // startBtn.setAttribute('aria-expanded', false);
-      //});
   </script>

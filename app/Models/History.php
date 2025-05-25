@@ -9,14 +9,13 @@ class History extends Model
 {
     use HasFactory;
 
-     protected $fillable = [
+    protected $fillable = [
         'user_id',
         'image_path',
         'skin_type',
-        'analysis_result'
     ];
 
-     public function user()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
