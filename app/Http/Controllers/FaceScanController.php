@@ -47,16 +47,14 @@ class FaceScanController extends Controller
 
         // Tentukan tipe kulit
         $skinTypes = ['Kering', 'Berminyak', 'Kombinasi', 'Normal'];
-        $skinType = $skinTypes[array_rand($skinTypes)];
+        $skinType = $skinTypes[0];
 
-        // Buat entri history
         $history = History::create([
             'user_id' => Auth::id(),
             'image_path' => $imagePath,
             'skin_type' => $skinType,
         ]);
 
-        // Simpan rekomendasi produk ke database
         $productRecommendations = $this->getDummyProductRecommendations($skinType);
         foreach ($productRecommendations as $product) {
             ProductRecommendation::create([
@@ -87,7 +85,7 @@ class FaceScanController extends Controller
                     'harga' => 150000,
                     'deskripsi' => 'Pembersih lembut untuk kulit kering',
                     'image' => 'images/products/hydrating_cleanser.jpeg',
-                    'link' => 'https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwi48dKi3b2NAxUBqmYCHToiKUwYABAMGgJzbQ&co=1&gclid=CjwKCAjw3MXBBhAzEiwA0vLXQYIe2Q4M9r7WosS3WyVsSIqZP59w4_95lOxNguq3r1TEoUR6Y80MKBoCjBkQAvD_BwE&ohost=www.google.com&cid=CAESeeD2KhGPalqzOVHKUoTYpwshhjxntF8qPvgAXLft82we6GMsq9LO3MOK44zrliQuVDyPDreef4Y8_20A82J7h6ou9RAt0wC8Iz8pIrNX0kR6DQ8vF6-D7RtiTbTDnpDvoKt-QZuMZBfH39Nr7cz8NDiYezReDx9GYsI&category=acrcp_v1_0&sig=AOD64_0JIEJ8yOMvdWWrs6KacfsWdxykqw&ctype=5&q=&ved=2ahUKEwjl2s2i3b2NAxWBwjgGHalvL1gQ9aACKAB6BAgFEB4&adurl=',
+                    'link' => 'https://shorturl.at/6xrrM'
                 ],
                 [
                     'nama' => 'Moisture Boost Serum',
@@ -95,7 +93,7 @@ class FaceScanController extends Controller
                     'harga' => 250000,
                     'deskripsi' => 'Serum intensif dengan hyaluronic acid',
                     'image' => 'images/products/moisture_boost_serum.png',
-                    'link' => 'https://example.com/moisture-boost-serum',
+                    'link' => 'https://www.tokopedia.com/rekomendasi/16547506847',
                 ]
             ],
             'Berminyak' => [
@@ -105,7 +103,7 @@ class FaceScanController extends Controller
                     'harga' => 120000,
                     'deskripsi' => 'Toner untuk mengurangi minyak berlebih',
                     'image' => 'images/products/oil_control_toner.jpeg',
-                    'link' => 'https://example.com/oil-control-toner',
+                    'link' => 'https://shorturl.at/6xrrM',
                 ]
             ],
             'Kombinasi' => [
@@ -115,7 +113,7 @@ class FaceScanController extends Controller
                     'harga' => 180000,
                     'deskripsi' => 'Pelembab seimbang untuk kulit kombinasi',
                     'image' => 'images/products/balanced_moisturizer.jpeg',
-                    'link' => 'https://example.com/balanced-moisturizer',
+                    'link' => 'https://shorturl.at/6xrrM',
                 ]
             ],
             'Normal' => [
@@ -125,7 +123,7 @@ class FaceScanController extends Controller
                     'harga' => 200000,
                     'deskripsi' => 'Krim harian untuk kulit normal',
                     'image' => 'images/products/gentle_daily_cream.jpeg',
-                    'link' => 'https://example.com/gentle-daily-cream',
+                    'link' => 'https://shorturl.at/6xrrM',
                 ]
             ]
         ];

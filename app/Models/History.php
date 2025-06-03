@@ -12,7 +12,7 @@ class History extends Model
     protected $fillable = [
         'user_id',
         'image_path',
-        'skin_type',
+        'skin_type'
     ];
 
     public function user()
@@ -20,8 +20,10 @@ class History extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function productRecommendation()
+
+     public function products()
     {
-        return $this->hasMany(ProductRecommendation::class);
+        return $this->belongsToMany(Product::class, 'product_recommendations')
+                    ->withTimestamps();
     }
 }

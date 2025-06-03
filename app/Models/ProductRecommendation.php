@@ -12,17 +12,21 @@ class ProductRecommendation extends Model
     protected $table = 'product_recommendations';
 
     protected $fillable = [
-        'history_id',
-        'product_name',
-        'product_category',
-        'product_description',
-        'product_image',
-        'recommendation_links',
-        'product_price',
+         'history_id',
+        'product_id',
     ];
 
+    // Relasi ke History
     public function history()
     {
         return $this->belongsTo(History::class);
     }
+
+    // Relasi ke Product
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+
 }

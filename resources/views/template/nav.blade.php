@@ -1,5 +1,5 @@
     <nav>
-        <div class="logo">VELORA</div>
+        <div class="logo"><img class="logo-img" src="\images\Logo_Velora.png" alt=""></div>
         <ul>
             @guest
                 <li class="{{ Route::currentRouteName() == 'home' ? 'active' : '' }}">

@@ -36,13 +36,26 @@
 
     nav {
         background: #8997b0;
-        /* abu kebiruan */
         padding: 15px 30px;
         display: flex;
-        justify-content: space-between;
+        justify-content: end;
         align-items: center;
         font-family: 'laila';
         box-shadow: 0px 5px 12px 0px rgba(137, 151, 176, 0.78);
+    }
+
+    nav .logo {
+        font-weight: bold;
+        letter-spacing: 3px;
+        font-size: 1.2rem;
+        color: black;
+        position: absolute;
+        left: 40px;
+        padding-top: 10px;
+    }
+
+    .logo img {
+        height: 90px;
 
     }
 
