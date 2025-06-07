@@ -15,13 +15,8 @@
     <main id="scanning-page">
         <div class="scan-box" aria-label="Face scanning area">
 
-          @if ($history)
-                <img class="camera-preview" src="{{ asset('storage/scans/' . basename($history->image_path)) }}"
-                    alt="">
-            @else
-                <div class="title">No analysis results available.</div>
-            @endif
-      </div>
+
+        </div>
 
 
         <div style="position: relative; width: max-content; margin: 0 auto; margin-bottom: -100px">
@@ -84,18 +79,14 @@
             aria-label="Analysis results and recommended products">
 
 
+            <p>Recommended Products</p>
 
-        @if ($history)
-                <div class="title">Analysis Results: {{ $history->skin_type }}</div>
-            @else
-                <div class="title">No analysis results available.</div>
-            @endif            <p>Recommended Products</p>
-
-            @foreach ($recommendedPr    oducts as $product)
+            @foreach ($produks as $product)
                 <a href="{{ $product->recommendation_links }}">
                     <div class="product-item" tabindex="0" role="button"
                         aria-label="{{ $product->product_name }} from {{ $product->product_category }}, {{ $product->product_description }}">
-                        <img src="{{asset($product->product_image)}}" class="product-icon" alt="" srcset="">
+                        <img src="{{ asset('Product_images/' . $product->image_name) }}"
+                            alt="{{ $product->product_name }}"" class="product-icon" alt="" srcset="">
                         <div class="product-info">
                             <h4>{{ $product->product_name }}</h4>
                             <div class="brand">{{ $product->product_category }}</div>

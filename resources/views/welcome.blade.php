@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Velora - Deteksi Kulit Wajah</title>
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="bootstrap-5.0.2-dist\css\bootstrap.min.css">
   </head>
 
   <body>
@@ -40,5 +41,7 @@
         <img src="{{ asset('images/gambar_home.jpg') }}" alt="Wanita dengan perawatan kulit" />
       </section>
     </main>
+
+    <script src="bootstrap-5.0.2-dist\js\bootstrap.min.js"></script>
   </body>
 </html>

@@ -22,6 +22,11 @@ class Product extends Model
     public function histories()
     {
         return $this->belongsToMany(History::class, 'product_recommendations')
-                    ->withTimestamps();
+            ->withTimestamps();
+    }
+
+    public function getImageNameAttribute()
+    {
+        return basename($this->product_image);
     }
 }

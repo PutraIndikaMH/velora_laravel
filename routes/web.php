@@ -8,6 +8,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\FaceScanController;
 use App\Http\Controllers\FeedbackContoller;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,9 @@ use App\Http\Controllers\HistoryController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/produk', [ProductController::class, 'produk'])->name('produk');
+
 
 Route::get('/', function () {
     return view('welcome');

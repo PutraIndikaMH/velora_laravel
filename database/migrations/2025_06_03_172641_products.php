@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
+     *d
      * @return void
      */
     public function up()
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('product_name');
             $table->string('product_description')->nullable();
-            $table->string('recommendation_links')->nullable();
+            $table->text('recommendation_links')->nullable();
             $table->decimal('product_price', 10, 2)->nullable();
             $table->string('product_image')->nullable();
             $table->string('skin_type')->nullable();
