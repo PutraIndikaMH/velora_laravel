@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
+    'ai_api_url' => env('AI_API_URL', 'http://localhost:5000'),
     /*
     |--------------------------------------------------------------------------
     | Application Name

@@ -2,32 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AIApiService;
+use App\Models\History;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
+    protected $aiApiService;
+
+    public function __construct(AIApiService $aiApiService)
+    {
+        $this->aiApiService = $aiApiService;
+    }
+
     public function index()
     {
         return view('services');
     }
-    public function handleChat(Request $request)
-    {
-        try {
-            $message = trim(strtolower($request->input('message')));
 
-            if (empty($message)) {
-                return "Pesan tidak boleh kosong.";
-            }
+ public function handleChat(Request $request)
+{
+    $request->validate([
+        'message' => 'required|string|max:1000'
+    ]);
 
-            $responses = [
-                "kulitku sering perih kalau pakai skincare, kenapa ya?" => "Aku lihat kamu punya masalah kulit kering dan agak sensitif, ya? Yuk kita bahas pelan-pelan...",
-                "iya, kadang suka merah juga" => "Sebelum kita lanjut, aku mau tanya sedikit ya, kamu merasa kulitmu makin kering di pagi atau malam hari?",
-                "biasanya malam sih kak, apalagi kalau habis mandi." => "Noted ya! Itu bisa jadi karena skin barrier kamu sedang lemah. Tapi jangan khawatir, ini masih bisa dibantu dengan perawatan yang tepat.",
-            ];
+    $message = $request->input('message');
+    
+    // Get user's latest skin type and skin condition from history
+    $latestHistory = History::where('user_id', Auth::id())
+        ->latest()
+        ->first();
+    
+    $skinType = $latestHistory ? $latestHistory->skin_type : 'Normal';
+    $skinCondition = $latestHistory ? $latestHistory->skin_condition : 'Tidak Berjerawat'; 
 
-            return $responses[$message] ?? "Maaf, saya tidak mengerti.";
-        } catch (\Exception $e) {
-            return "Terjadi kesalahan, silakan coba lagi.";
-        }
-    }
+    // Get response from AI chatbot
+    $response = $this->aiApiService->chatbot($message, $skinType, $skinCondition);
+
+    return response($response, 200, ['Content-Type' => 'text/plain']);
+}
 }

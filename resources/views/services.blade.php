@@ -37,47 +37,50 @@
     </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
+$('#chatForm').on('submit', function(event) {
+    event.preventDefault();
+    var userMessage = $('#userBox').val().trim();
 
+    if (!userMessage) {
+        alert("Masukkan pesan sebelum mengirim.");
+        return;
+    }
 
-        $('#chatForm').on('submit', function(event) {
-            event.preventDefault();
-            var userMessage = $('#userBox').val().trim();
+    // Show loading indicator
+    $('#chatBox').append(`<div class='bubble user'>${userMessage}</div>`);
+    $('#chatBox').append(`<div class='bubble bot loading'>Sedang mengetik...</div>`);
+    $('#userBox').val('');
+    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
 
-            if (!userMessage) {
-                alert("Masukkan pesan sebelum mengirim.");
-                return;
-            }
-
-
-            // Tampilkan pesan user
-            $('#chatBox').append(`<div class='bubble user'>${userMessage}</div>`);
-            $('#userBox').val('');
+    // Send to server
+    $.ajax({
+        url: '{{ route('chat.handle') }}',
+        method: 'POST',
+        data: {
+            message: userMessage,
+            _token: '{{ csrf_token() }}'
+        },
+        dataType: 'text',
+        success: function(reply) {
+            // Remove loading indicator
+            $('.loading').remove();
+            
+            // Parse Markdown to HTML
+            const htmlContent = marked.parse(reply);
+            $('#chatBox').append(`<div class='bubble bot'>${htmlContent}</div>`);
             $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
-
-            // Kirim ke server
-            $.ajax({
-                url: '{{ route('chat.handle') }}',
-                method: 'POST',
-                data: {
-                    message: userMessage,
-                    _token: '{{ csrf_token() }}'
-                },
-                dataType: 'text',
-                // Terima response sebagai text biasa
-                success: function(reply) {
-                    console.log(reply)
-                    $('#chatBox').append(`<div class='bubble bot'>${reply}</div>`);
-                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
-                },
-                error: function() {
-                    console.log("error")
-                    $('#chatBox').append('<div class="bubble bot error">Maaf, terjadi kesalahan</div>');
-                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
-                }
-            });
-        });
-    </script>
+        },
+        error: function() {
+            $('.loading').remove();
+            $('#chatBox').append('<div class="bubble bot error">Maaf, terjadi kesalahan</div>');
+            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+        }
+    });
+});
+</script>
 
 </body>
 

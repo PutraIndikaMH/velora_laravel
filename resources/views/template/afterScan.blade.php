@@ -13,15 +13,17 @@
     @include('template.nav')
 
     <main id="scanning-page">
-        <div class="scan-box" aria-label="Face scanning area">
-
-          @if ($history)
-                <img class="camera-preview" src="{{ asset('storage/scans/' . basename($history->image_path)) }}"
-                    alt="">
-            @else
-                <div class="title">No analysis results available.</div>
-            @endif
-      </div>
+    <div class="scan-box" aria-label="Face scanning area">
+        @if ($history && $history->image_path)
+            <img class="camera-preview" 
+                 src="{{ asset('storage/' . $history->image_path) }}"
+                 alt="Analyzed face with detection results"
+                 style="width: 100%; height: 100%; object-fit: cover;">
+        @else
+            <div class="title">No analysis results available.</div>
+        @endif
+    </div>
+    
 
 
         <div style="position: relative; width: max-content; margin: 0 auto; margin-bottom: -100px">
@@ -86,12 +88,12 @@
 
 
         @if ($history)
-                <div class="title">Analysis Results: {{ $history->skin_type }}</div>
+                <div class="title">Analysis Results: {{ $history->skin_type }} - {{ $history->skin_condition }}</div>
             @else
                 <div class="title">No analysis results available.</div>
             @endif            <p>Recommended Products</p>
 
-            @foreach ($recommendedPr    oducts as $product)
+            @foreach ($recommendedProducts as $product)
                 <a href="{{ $product->recommendation_links }}">
                     <div class="product-item" tabindex="0" role="button"
                         aria-label="{{ $product->product_name }} from {{ $product->product_category }}, {{ $product->product_description }}">

@@ -32,6 +32,7 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+Route::post('/chat/handle', [ChatController::class, 'handleChat'])->name('chat.handle');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.process');
