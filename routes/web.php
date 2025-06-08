@@ -9,6 +9,9 @@ use App\Http\Controllers\FaceScanController;
 use App\Http\Controllers\FeedbackContoller;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +24,7 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::get('/produk', [ProductController::class, 'produk'])->name('produk');
+// Route::get('/produk', [ProductController::class, 'produk'])->name('produk');
 
 
 Route::get('/', function () {
@@ -33,13 +36,16 @@ Route::get('/about', function () {
 })->name('about');
 
 
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register'])->name('register.process');
+Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [UserController::class, 'register'])->name('register.process');
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [UserController::class, 'login'])->name('login.process');
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/edit_profil/{id}', [UserController::class, 'edit_profile'])->name('edit_profile');
+    Route::post('/update_profile/{id}', [UserController::class, 'update_profile'])->name('update_profile');
     Route::get('/scanning', [FaceScanController::class, 'index'])->name('scanning');
     Route::post('/upload', [FaceScanController::class, 'upload'])
         ->name('scan.upload');
@@ -48,5 +54,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/postFeedback', [FeedbackContoller::class, 'postFeedback'])->name('postFeedback');
     Route::get('/services', [ChatController::class, 'index'])->name('services');
     Route::post('/services', [ChatController::class, 'handleChat'])->name('chat.handle');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
+    Route::middleware(['admin'])->group(function () {
+        Route::resource('admin/produk', ProdukController::class);
+    });
 });

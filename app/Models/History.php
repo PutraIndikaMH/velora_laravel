@@ -12,7 +12,8 @@ class History extends Model
     protected $fillable = [
         'user_id',
         'image_path',
-        'skin_type'
+        'skin_type',
+        'skin_condition'
     ];
 
     public function user()

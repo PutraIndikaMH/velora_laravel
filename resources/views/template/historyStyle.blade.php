@@ -48,6 +48,19 @@
         flex-shrink: 0;
     }
 
+    .edit-profile-text {
+        margin-top: 0;
+        /* Mengurangi margin atas */
+        margin-left: 8px;
+        /* Memberi jarak antara ikon dan teks */
+        font-size: 16px;
+        /* Menyesuaikan ukuran teks */
+        font-weight: 600;
+        /* Menebalkan teks */
+        color: #222;
+        /* Menyesuaikan warna teks agar sesuai */
+    }
+
     /* Container utama */
     main {
         flex-grow: 1;
@@ -80,7 +93,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 18px;
-         padding: 20px;
+        padding: 20px;
     }
 
     /* Card History */
