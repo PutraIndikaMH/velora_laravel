@@ -85,7 +85,7 @@
                 <a href="{{ $product->recommendation_links }}">
                     <div class="product-item" tabindex="0" role="button"
                         aria-label="{{ $product->product_name }} from {{ $product->product_category }}, {{ $product->product_description }}">
-                        <img src="{{ asset('Product_images/' . $product->image_name) }}"
+                        <img src="{{ asset('gambar_produk/' . $product->image_name) }}"
                             alt="{{ $product->product_name }}"" class="product-icon" alt="" srcset="">
                         <div class="product-info">
                             <h4>{{ $product->product_name }}</h4>
