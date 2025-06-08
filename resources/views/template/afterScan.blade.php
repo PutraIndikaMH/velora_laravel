@@ -13,17 +13,17 @@
     @include('template.nav')
 
     <main id="scanning-page">
-    <div class="scan-box" aria-label="Face scanning area">
-        @if ($history && $history->image_path)
-            <img class="camera-preview" 
-                 src="{{ asset('storage/' . $history->image_path) }}"
-                 alt="Analyzed face with detection results"
-                 style="width: 100%; height: 100%; object-fit: cover;">
-        @else
+        <div class="scan-box" aria-label="Face scanning area">
+            @if ($history && $history->image_path)
+            <img class="camera-preview"
+                src="{{ asset('storage/' . $history->image_path) }}"
+                alt="Analyzed face with detection results"
+                style="width: 100%; height: 100%; object-fit: cover;">
+            @else
             <div class="title">No analysis results available.</div>
-        @endif
-    </div>
-    
+            @endif
+        </div>
+
 
 
         <div style="position: relative; width: max-content; margin: 0 auto; margin-bottom: -100px">
@@ -77,9 +77,9 @@
         </div>
 
         @if (session('message'))
-            <div class="alert alert-success" style="text-align: center">
-                {{ session('message') }}
-            </div>
+        <div class="alert alert-success" style="text-align: center">
+            {{ session('message') }}
+        </div>
         @endif
 
         <section class="recommendation" id="recommendationSection"
@@ -87,30 +87,32 @@
 
 
 
-        @if ($history)
-                <div class="title">Analysis Results: {{ $history->skin_type }} - {{ $history->skin_condition }}</div>
+            @if ($history)
+            <div class="title">Analysis Results: {{ $history->skin_type }} - {{ $history->skin_condition }}</div>
             @else
-                <div class="title">No analysis results available.</div>
-            @endif            <p>Recommended Products</p>
+            <div class="title">No analysis results available.</div>
+            @endif <p>Recommended Products</p>
 
             @foreach ($recommendedProducts as $product)
-                <a href="{{ $product->recommendation_links }}">
-                    <div class="product-item" tabindex="0" role="button"
-                        aria-label="{{ $product->product_name }} from {{ $product->product_category }}, {{ $product->product_description }}">
-                        <img src="{{asset(path: $product->product_image)}}" class="product-icon" alt="" srcset="">
-                        <div class="product-info">
-                            <h4>{{ $product->product_name }}</h4>
-                            <div class="brand">{{ $product->product_category }}</div>
-                            <div class="price">Rp. {{ number_format($product->product_price, 0, ',', '.') }}</div>
-                            <div class="desc">{{ $product->product_description }}</div>
-                        </div>
-                        <div class="product-arrow">&#8594;</div>
+            <a href="{{ $product->recommendation_links }}">
+                <div class="product-item" tabindex="0" role="button"
+                    aria-label="{{ $product->product_name }} from {{ $product->product_category }}, {{ $product->product_description }}">
+                    <!-- <img src="{{ asset(path: 'gambar_produk/ACNEDOT_Treatment_Low_pH_Cleanser.jpg') }}" alt="{{ $product->product_name }}" width="50" height="50"> -->
+
+                    <img src="{{ asset('gambar_produk/' . rawurlencode(basename($product->product_image))) }}" alt="{{ $product->product_name }}" width="100" height="100">
+                    <div class="product-info">
+                        <h4>{{ $product->product_name }}</h4>
+                        <div class="brand">{{ $product->product_category }}</div>
+                        <div class="price">Rp. {{ number_format($product->product_price, 0, ',', '.') }}</div>
+                        <div class="desc">{{ $product->product_description }}</div>
                     </div>
-                </a>
+                    <div class="product-arrow">&#8594;</div>
+                </div>
+            </a>
             @endforeach
 
             @if (empty($recommendedProducts))
-                <p>No recommendations available at this time.</p>
+            <p>No recommendations available at this time.</p>
             @endif
         </section>
 

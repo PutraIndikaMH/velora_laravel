@@ -9,7 +9,19 @@ class ConsultationChat extends Model
 {
     use HasFactory;
 
-     public function user()
+    protected $fillable = [
+        'user_id',
+        'room_id',
+        'message',
+        'is_from_bot',
+        'history_id'
+    ];
+
+    protected $casts = [
+        'is_from_bot' => 'boolean'
+    ];
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -17,5 +29,10 @@ class ConsultationChat extends Model
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function history()
+    {
+        return $this->belongsTo(History::class);
     }
 }

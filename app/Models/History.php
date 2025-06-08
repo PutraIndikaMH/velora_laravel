@@ -22,9 +22,19 @@ class History extends Model
     }
 
 
-     public function products()
+    public function products()
     {
         return $this->belongsToMany(Product::class, 'product_recommendations')
-                    ->withTimestamps();
+            ->withTimestamps();
+    }
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class);
+    }
+
+    public function consultationChats()
+    {
+        return $this->hasMany(ConsultationChat::class);
     }
 }
