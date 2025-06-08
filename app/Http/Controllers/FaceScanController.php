@@ -67,9 +67,17 @@ public function upload(Request $request)
             'normal' => 'Normal'
         ];
         $skinType = $skinTypeMapping[$skinType] ?? 'Normal';
-
+        
         // Detect objects for analysis and get the detected image
         $objectDetection = $this->aiApiService->detectObjects($fullImagePath);
+
+        // Initialize skin condition with default value
+        $skinCondition = 'Tidak Berjerawat'; // Default value
+
+        // Extract skin condition from API response
+        if ($objectDetection && isset($objectDetection['skin_condition'])) {
+            $skinCondition = $objectDetection['skin_condition'];
+        }
 
         // If object detection returns a detected image, replace the original
         if ($objectDetection && isset($objectDetection['image'])) {
@@ -105,7 +113,7 @@ public function upload(Request $request)
         'user_id' => Auth::id(),
         'image_path' => $displayImagePath, // Store the detected image path
         'skin_type' => $skinType,
-        'skin_condition' => 'Normal', // Add skin condition if needed
+        'skin_condition' => $skinCondition, // Add skin condition if needed
         'detection_data' => $detectionData,
     ]);
 

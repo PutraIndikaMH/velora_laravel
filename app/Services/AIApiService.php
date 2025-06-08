@@ -35,6 +35,7 @@ class AIApiService
         }
     }
 
+
     public function detectObjects($imagePath)
     {
         try {

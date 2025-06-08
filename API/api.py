@@ -294,6 +294,9 @@ def detect_objects_endpoint():
         from PIL import Image
         import cv2
         
+        skin_condition = "Berjerawat" if len(detections) > 0 else "Tidak Berjerawat"
+
+
         # Convert BGR to RGB (OpenCV uses BGR, PIL uses RGB)
         annotated_frame_rgb = cv2.cvtColor(annotated_frame, cv2.COLOR_BGR2RGB)
         
@@ -308,6 +311,7 @@ def detect_objects_endpoint():
         return jsonify({
             "detections": detections,
             "detection_count": len(detections),
+            "skin_condition": skin_condition,
             "image": base64.b64encode(img_bytes).decode('utf-8')
         })
     except Exception as e:
