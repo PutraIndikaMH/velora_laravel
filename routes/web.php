@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('scan.upload');
     Route::get('/scan', [FaceScanController::class, 'showRecommendations'])->name('scan');
     Route::get('/history', [HistoryController::class, 'history'])->name('history');
+    Route::delete('/history/{id}', [HistoryController::class, 'destroy'])->name('history.delete');
     Route::post('/postFeedback', [FeedbackContoller::class, 'postFeedback'])->name('postFeedback');
     Route::get('/services', [ChatController::class, 'index'])->name('services');
     Route::post('/services', [ChatController::class, 'handleChat'])->name('chat.handle');
