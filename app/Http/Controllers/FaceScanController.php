@@ -4,14 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\History;
 use App\Models\ProductRecommendation;
+use App\Models\Product;
+use App\Services\AIApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class FaceScanController extends Controller
 {
+    protected $aiApiService;
+
+    public function __construct(AIApiService $aiApiService)
+    {
+        $this->aiApiService = $aiApiService;
+    }
+
     public function index()
     {
         return view('scanning');
@@ -27,107 +35,100 @@ class FaceScanController extends Controller
 
         $recommendedProducts = [];
         if ($history) {
-            $recommendedProducts = ProductRecommendation::where('history_id', $history->id)->get();
+            $recommendedProducts = ProductRecommendation::where('history_id', $history->id)
+                ->join('products', 'product_recommendations.product_id', '=', 'products.id')
+                ->select('products.*')
+                ->get();
         }
 
         // Kirimkan data ke view
         return view('template.afterScan', compact('recommendedProducts', 'history'));
     }
 
+public function upload(Request $request)
+{
+    // Validasi input
+    $request->validate([
+        'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+    ]);
 
-    public function upload(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
-        ]);
+    // Simpan gambar dan ambil path
+    $imagePath = $request->file('image')->store('scans', 'public');
+    $fullImagePath = storage_path('app/public/' . $imagePath);
 
-        // Simpan gambar dan ambil path
-        $imagePath = $request->file('image')->store('scans', 'public');
+    try {
+        // Predict skin type using AI API
+        $skinType = $this->aiApiService->predictSkinType($fullImagePath);
 
-        // Tentukan tipe kulit
-        $skinTypes = ['Kering', 'Berminyak', 'Kombinasi', 'Normal'];
-        $skinType = $skinTypes[0];
+        // Convert English to Indonesian
+        $skinTypeMapping = [
+            'dry' => 'Kering',
+            'oily' => 'Berminyak',
+            'normal' => 'Normal'
+        ];
+        $skinType = $skinTypeMapping[$skinType] ?? 'Normal';
+        
+        // Detect objects for analysis and get the detected image
+        $objectDetection = $this->aiApiService->detectObjects($fullImagePath);
 
-        $history = History::create([
-            'user_id' => Auth::id(),
-            'image_path' => $imagePath,
-            'skin_type' => $skinType,
-        ]);
+        // Initialize skin condition with default value
+        $skinCondition = 'Tidak Berjerawat'; // Default value
 
-        $productRecommendations = $this->getDummyProductRecommendations($skinType);
-        foreach ($productRecommendations as $product) {
-            ProductRecommendation::create([
-                'history_id' => $history->id,
-                'product_name' => $product['nama'],
-                'product_category' => $product['brand'],
-                'product_description' => $product['deskripsi'],
-                'product_price' => $product['harga'],
-                'product_image' => $product['image'],
-                'recommendation_links' => $product['link'],
-            ]);
+        // Extract skin condition from API response
+        if ($objectDetection && isset($objectDetection['skin_condition'])) {
+            $skinCondition = $objectDetection['skin_condition'];
         }
 
-        // Redirect ke halaman rekomendasi dengan menambahkan history_id
-        return redirect()->route('scan', ['history_id' => $history->id])
-            ->with('message', 'Analysis complete, recommendations updated!');
+        // If object detection returns a detected image, replace the original
+        if ($objectDetection && isset($objectDetection['image'])) {
+            // Decode base64 image
+            $detectedImageData = base64_decode($objectDetection['image']);
+
+            // Create new filename for detected image with bounding boxes
+            $originalName = pathinfo($imagePath, PATHINFO_FILENAME);
+            $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+            $detectedImagePath = 'scans/' . $originalName . '_detected.' . $extension;
+            $detectedImageFullPath = storage_path('app/public/' . $detectedImagePath);
+
+            // Save the detected image with bounding boxes
+            file_put_contents($detectedImageFullPath, $detectedImageData);
+
+            // Use detected image path for display
+            $displayImagePath = $detectedImagePath;
+        } else {
+            // Use original image if detection failed
+            $displayImagePath = $imagePath;
+        }
+
+        // Store detection results if needed
+        $detectionData = $objectDetection ? json_encode($objectDetection) : null;
+    } catch (\Exception $e) {
+        Log::error('AI Analysis failed: ' . $e->getMessage());
+        $skinType = 'Normal'; // Fallback
+        $detectionData = null;
+        $displayImagePath = $imagePath; // Use original image on error
     }
 
+    $history = History::create([
+        'user_id' => Auth::id(),
+        'image_path' => $displayImagePath, // Store the detected image path
+        'skin_type' => $skinType,
+        'skin_condition' => $skinCondition, // Add skin condition if needed
+        'detection_data' => $detectionData,
+    ]);
 
+    $matchingProducts = Product::where('skin_type', 'LIKE', '%' . $skinType . '%')->get();
 
-    private function getDummyProductRecommendations($skinType)
-    {
-        $recommendations = [
-            'Kering' => [
-                [
-                    'nama' => 'Hydrating Cleanser',
-                    'brand' => 'CleanCare',
-                    'harga' => 150000,
-                    'deskripsi' => 'Pembersih lembut untuk kulit kering',
-                    'image' => 'images/products/hydrating_cleanser.jpeg',
-                    'link' => 'https://shorturl.at/6xrrM'
-                ],
-                [
-                    'nama' => 'Moisture Boost Serum',
-                    'brand' => 'DermaCare',
-                    'harga' => 250000,
-                    'deskripsi' => 'Serum intensif dengan hyaluronic acid',
-                    'image' => 'images/products/moisture_boost_serum.png',
-                    'link' => 'https://www.tokopedia.com/rekomendasi/16547506847',
-                ]
-            ],
-            'Berminyak' => [
-                [
-                    'nama' => 'Oil Control Toner',
-                    'brand' => 'PureClean',
-                    'harga' => 120000,
-                    'deskripsi' => 'Toner untuk mengurangi minyak berlebih',
-                    'image' => 'images/products/oil_control_toner.jpeg',
-                    'link' => 'https://shorturl.at/6xrrM',
-                ]
-            ],
-            'Kombinasi' => [
-                [
-                    'nama' => 'Balanced Moisturizer',
-                    'brand' => 'SkinBalance',
-                    'harga' => 180000,
-                    'deskripsi' => 'Pelembab seimbang untuk kulit kombinasi',
-                    'image' => 'images/products/balanced_moisturizer.jpeg',
-                    'link' => 'https://shorturl.at/6xrrM',
-                ]
-            ],
-            'Normal' => [
-                [
-                    'nama' => 'Gentle Daily Cream',
-                    'brand' => 'NaturalGlow',
-                    'harga' => 200000,
-                    'deskripsi' => 'Krim harian untuk kulit normal',
-                    'image' => 'images/products/gentle_daily_cream.jpeg',
-                    'link' => 'https://shorturl.at/6xrrM',
-                ]
-            ]
-        ];
-
-        return $recommendations[$skinType] ?? [];
+    // Create recommendations for each matching product
+    foreach ($matchingProducts as $product) {
+        ProductRecommendation::create([
+            'history_id' => $history->id,
+            'product_id' => $product->id,
+        ]);
     }
+
+    // Redirect ke halaman rekomendasi dengan menambahkan history_id
+    return redirect()->route('scan', ['history_id' => $history->id])
+        ->with('message', 'Analysis complete, recommendations updated!');
+}
 }

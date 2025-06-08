@@ -13,7 +13,7 @@ class History extends Model
         'user_id',
         'image_path',
         'skin_type',
-        'skin_condition'
+        'skin_condition',
     ];
 
     public function user()
