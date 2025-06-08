@@ -13,6 +13,11 @@ class HistoryController extends Controller
         $history = History::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('history', compact('history'));
+
+        // Ambil data pengguna
+        $user = Auth::user();
+
+        // Kirim ke view
+        return view('history', compact('history', 'user'));
     }
 }
