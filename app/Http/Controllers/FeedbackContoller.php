@@ -27,4 +27,11 @@ class FeedbackContoller extends Controller
 
         return redirect()->back()->with('success', 'Thank you for your feedback!');
     }
+
+    public function show_feedback()
+    {
+        $feedback = Feedback::with('user')->latest()->paginate(10); // include user relation
+
+        return view('admin.feedback', compact('feedback'));
+    }
 }

@@ -12,10 +12,21 @@ class ProdukController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $produk = Product::all();
-        return view('admin.produk', compact('produk'));
+        // Dapatkan query pencarian dari input
+        $search = $request->input('search');
+
+        // Ambil produk, cari berdasarkan nama atau deskripsi
+        $produk = Product::when($search, function ($query) use ($search) {
+            return $query->where('product_name', 'like', '%' . $search . '%')
+                ->orWhere('product_description', 'like', '%' . $search . '%');
+        })->paginate(15);
+
+
+        return view('admin.produk', compact('produk', 'search')); // Kirim produk dan search ke view
+
     }
 
     /**

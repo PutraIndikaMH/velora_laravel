@@ -59,5 +59,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['admin'])->group(function () {
         Route::resource('admin/produk', ProdukController::class);
+        Route::get('admin/feedback', [FeedbackContoller::class, 'show_feedback'])->name('admin_feedback');
     });
 });
