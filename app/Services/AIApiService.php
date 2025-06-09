@@ -11,15 +11,15 @@ class AIApiService
 
     public function __construct()
     {
-        $this->baseUrl = config('app.ai_api_url', 'http://localhost:5000');
+        $this->baseUrl = config('app.ai_api_url', 'http://192.168.93.227:5000/');
     }
 
     public function predictSkinType($imagePath)
     {
         try {
             $response = Http::attach(
-                'image', 
-                file_get_contents($imagePath), 
+                'image',
+                file_get_contents($imagePath),
                 basename($imagePath)
             )->post($this->baseUrl . '/predict-skin-type');
 
@@ -40,8 +40,8 @@ class AIApiService
     {
         try {
             $response = Http::attach(
-                'image', 
-                file_get_contents($imagePath), 
+                'image',
+                file_get_contents($imagePath),
                 basename($imagePath)
             )->post($this->baseUrl . '/detect-objects');
 

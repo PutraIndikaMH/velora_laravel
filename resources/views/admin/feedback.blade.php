@@ -55,7 +55,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ff8fba;">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="#">Admin Produk</a>
+            <a class="navbar-brand fw-bold" href="#">Lihat Feedback</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -79,6 +79,7 @@
                     <th>ID Feedback</th>
                     <th>ID User</th>
                     <th>Nama User</th>
+                    <th>Email</th>
                     <th>Pesan</th>
                 </tr>
             </thead>
@@ -89,6 +90,7 @@
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->user_id }}</td>
                         <td>{{ $item->user->nama ?? 'Tidak diketahui' }}</td>
+                        <td>{{ $item->user->email ?? 'Tidak diketahui' }}</td>
                         <td>{{ $item->message }}</td>
                     </tr>
                 @empty
