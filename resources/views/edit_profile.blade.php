@@ -77,7 +77,7 @@
     </header>
 
     <main class="register-page">
-        <h1>Edit Profil</h1>
+        <h1>Edit Profile</h1>
         <p class="subtitle">Please update your profile information below.:</p>
 
         <!-- Menampilkan alert pesan kesuksesan atau error -->
@@ -119,7 +119,7 @@
             <input type="password" name="password" placeholder="Password (Kosongkan jika tidak ingin mengubah)" />
             <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" />
 
-            <button type="submit" class="btn-daftar">Perbarui Profil</button>
+            <button type="submit" class="btn-daftar">Update Profile</button>
         </form>
     </main>
 
